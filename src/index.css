@@ -1,0 +1,19 @@
+* {
+  margin: 0;                  
+  padding: 0;      /* Remove as margens e preenchimentos padrão dos elementos. */
+  box-sizing: border-box;   /*Facilita os cálculos de largura e altura dos elementos. */
+}
+
+/* Cria um fundo degrade. */
+body {
+  background:
+    radial-gradient(circle at top, #2b1046 0%, #120a1f 40%, #090312 100%);
+
+  min-height: 100vh;
+
+  color: white;
+
+  font-family: Georgia, serif;
+
+  overflow-x: hidden;
+}

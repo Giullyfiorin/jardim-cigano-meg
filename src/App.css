@@ -1,0 +1,603 @@
+/* RESET / BASE */
+.home {
+  position: relative;
+  min-height: 100vh;
+  text-align: center;
+  padding-top: 120px;
+  overflow: hidden;
+}
+
+.titulo {
+  font-size: 4.5rem;
+  margin-bottom: 15px;
+  color: #fffaf2;
+  text-shadow: 0 0 15px rgba(245, 199, 107, 0.3);
+}
+
+.descricao {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
+.estrelas {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, #f5c76b 4px, transparent 5px),
+    radial-gradient(circle, white 3px, transparent 4px),
+    radial-gradient(circle, #f5c76b 5px, transparent 6px);
+  background-size: 300px 300px, 200px 200px, 450px 450px;
+  opacity: 0.7;
+  z-index: 0;
+}
+
+.lua-grande,
+.titulo,
+.slogan,
+.descricao,
+.botoes {
+  position: relative;
+  z-index: 1;
+}
+
+.lua-grande {
+  font-size: 8rem;
+  margin-bottom: 20px;
+  filter:
+    drop-shadow(0 0 15px #f5c76b)
+    drop-shadow(0 0 35px #f5c76b);
+  animation: flutuar 4s ease-in-out infinite;
+}
+
+.slogan {
+  color: #f5c76b;
+  font-size: 1.6rem;
+  margin-bottom: 20px;
+  text-shadow: 0 0 10px rgba(245, 199, 107, 0.5);
+  font-style: italic;
+}
+
+@keyframes flutuar {
+  0% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+  100% { transform: translateY(0); }
+}
+
+.redes-sociais {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 35px;
+}
+
+.redes-sociais a {
+  color: white;
+  font-size: 3.5rem;
+  transition: all 0.3s ease;
+}
+
+.redes-sociais a:hover {
+  transform: scale(1.15);
+  color: #f5c76b;
+}
+
+.estrelas {
+  pointer-events: none;
+}
+
+.redes-sociais {
+  position: relative;
+  z-index: 2;
+}
+
+
+/* BOTÕES */
+.botoes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.botao-agendar,
+.botao-whatsapp,
+.botao-horario {
+  border: none;
+  border-radius: 12px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.botao-agendar {
+  background: #c8a24d;
+  color: #1b102f;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+.botao-whatsapp {
+  background: #4b1f73;
+  color: white;
+  border: none;
+  padding: 15px 30px;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: bold;
+}
+
+
+.btn-sair {
+  background: transparent;
+  color: #f5c76b;
+  border: 1px solid #f5c76b;
+  padding: 12px 24px;
+  border-radius: 999px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: 0.3s;
+}
+
+.btn-sair:hover {
+  background: #f5c76b;
+  color: #1b102f;
+}
+
+.container-sair {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+
+/* PÁGINAS */
+.pagina-servicos,
+.pagina-agendamento {
+  max-width: 650px;
+  margin: 0 auto;
+  padding: 30px 15px;
+}
+
+.topo-servicos {
+  background: linear-gradient(135deg, #4b1f73, #d94f8c);
+  padding: 20px;
+  border-radius: 0 0 18px 18px;
+  text-align: center;
+  margin-bottom: 25px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+.topo-servicos h2 {
+  font-size: 1.4rem;
+}
+
+.topo-servicos p {
+  color: #f5c76b;
+  margin-top: 5px;
+}
+
+/* SERVIÇOS */
+.categoria-servicos,
+.calendario-card,
+.resumo-servico,
+.card-admin {
+  background: #fff8f0;
+  color: #1b102f;
+  border-radius: 14px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+.categoria-servicos {
+  overflow: hidden;
+}
+
+.categoria-servicos > h2 {
+  background: #4b1f73;
+  color: white;
+  padding: 15px 18px;
+  font-size: 1.2rem;
+}
+
+.servico-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 18px;
+  border-bottom: 1px solid #e6dce8;
+}
+
+.servico-item h3 {
+  font-size: 1rem;
+  margin-bottom: 4px;
+}
+
+.servico-item p {
+  color: #777;
+  font-size: 0.9rem;
+}
+
+.bolinha-servico {
+  width: 22px;
+  height: 22px;
+  border: 2px solid #9d6ad6;
+  border-radius: 50%;
+}
+
+.link-servico {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+/* AGENDAMENTO */
+.resumo-servico {
+  padding: 18px;
+  margin: 20px 0 30px;
+  border: 1px solid #ddd;
+}
+
+.resumo-servico p,
+.resumo-servico span {
+  color: #777;
+}
+
+.calendario-card {
+  padding: 20px;
+}
+
+.calendario-card h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.dias-semana,
+.calendario-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  gap: 14px;
+}
+
+.dias-semana {
+  font-size: 0.8rem;
+  margin-bottom: 12px;
+  color: #555;
+}
+
+.dia {
+  background: transparent;
+  border: none;
+  color: #b7b0bd;
+  font-size: 1rem;
+  padding: 10px;
+}
+
+.dia.disponivel {
+  color: #4caf12;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.dia.ativo {
+  background: #5bb318;
+  color: white;
+  font-weight: bold;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.dia.indisponivel {
+  color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.4;
+}
+
+.data-selecionada {
+  text-align: center;
+  margin: 28px 0 20px;
+  font-size: 1.1rem;
+}
+
+.horarios {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 12px;
+  padding: 20px;
+}
+
+.botao-horario {
+  background: white;
+  padding: 12px 22px;
+  transition: 0.3s;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.botao-horario:hover {
+  background: #d94f8c;
+  color: white;
+}
+
+.horario-ativo {
+  background: #d94f8c;
+  color: white;
+  box-shadow: 0 0 15px rgba(217, 79, 140, 0.7);
+}
+
+.horario-indisponivel {
+  background: #ddd;
+  color: #999;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* FORMULÁRIO */
+.campo-formulario {
+  width: 100%;
+  padding: 14px;
+  margin-top: 12px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  font-size: 1rem;
+}
+
+/* CONFIRMAÇÃO */
+.confirmacao-card {
+  text-align: center;
+}
+
+.confirmacao-card h3 {
+  margin-bottom: 15px;
+}
+
+.confirmacao-card p {
+  margin-bottom: 25px;
+}
+
+/* ADMIN */
+.pagina-admin {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 30px 15px;
+}
+
+.lista-admin {
+  display: grid;
+  gap: 18px;
+}
+
+.card-admin {
+  padding: 18px;
+}
+
+.card-admin h3 {
+  color: #4b1f73;
+  margin-bottom: 10px;
+}
+
+.card-admin p {
+  margin-bottom: 6px;
+}
+
+.acoes-admin {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+}
+
+.btn-confirmar {
+  background: #4caf50;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-cancelar {
+  background: #f44336;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-whatsapp {
+  background: #25d366;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.dashboard-admin {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.dashboard-card {
+  background: #fff8f0;
+  color: #1b102f;
+  padding: 18px;
+  border-radius: 14px;
+  text-align: center;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+}
+
+.dashboard-card h3 {
+  color: #4b1f73;
+  font-size: 2rem;
+}
+
+.dashboard-card p {
+  color: #777;
+}
+
+.login-admin {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  overflow: hidden;
+}
+
+.card-login {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 420px;
+  background: #fff8f0;
+  color: #1b102f;
+  padding: 35px;
+  border-radius: 18px;
+  text-align: center;
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35);
+}
+
+.lua-login {
+  font-size: 3.5rem;
+  margin-bottom: 10px;
+  filter: drop-shadow(0 0 18px #f5c76b);
+}
+
+.card-login h1 {
+  color: #4b1f73;
+  margin-bottom: 10px;
+}
+
+.card-login p {
+  color: #777;
+  margin-bottom: 20px;
+}
+
+/* RESPONSIVIDADE - CELULAR */
+@media (max-width: 600px) {
+  .home {
+    padding: 60px 20px 40px;
+  }
+
+  .lua-grande {
+    font-size: 5rem;
+    margin-bottom: 15px;
+  }
+
+  .titulo {
+    font-size: 2.7rem;
+    line-height: 1.1;
+  }
+
+  .slogan {
+    font-size: 1.05rem;
+    margin-top: 20px;
+    margin-bottom: 25px;
+  }
+
+  .descricao {
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+
+  .botao-agendar,
+  .botao-whatsapp {
+    width: 100%;
+    max-width: 280px;
+    padding: 14px 24px;
+  }
+
+  .redes-sociais {
+    gap: 35px;
+    margin-top: 32px;
+  }
+
+  .redes-sociais a {
+    font-size: 2rem;
+  }
+
+  .pagina-servicos,
+  .pagina-agendamento,
+  .pagina-admin {
+    padding: 20px 12px;
+  }
+
+  .topo-servicos {
+    border-radius: 14px;
+    padding: 18px;
+  }
+
+  .topo-servicos h2 {
+    font-size: 1.5rem;
+  }
+
+  .categoria-servicos > h2 {
+    font-size: 1.2rem;
+  }
+
+  .servico-item {
+    padding: 16px;
+  }
+
+  .calendario-card {
+    padding: 18px 12px;
+  }
+
+  .calendario-card h2 {
+    font-size: 1.6rem;
+  }
+
+  .dias-semana,
+  .calendario-grid {
+    gap: 8px;
+  }
+
+  .dia {
+    padding: 8px 4px;
+    font-size: 0.9rem;
+  }
+
+  .data-selecionada {
+    font-size: 1rem;
+    margin: 25px 0 18px;
+  }
+
+  .horarios {
+    padding: 15px 0;
+    gap: 10px;
+  }
+
+  .botao-horario {
+    min-width: 75px;
+    padding: 10px 14px;
+  }
+
+  .campo-formulario {
+    font-size: 0.95rem;
+  }
+
+  .dashboard-admin {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .acoes-admin {
+    flex-direction: column;
+  }
+
+  .acoes-admin button {
+    width: 100%;
+  }
+
+  .card-login {
+    padding: 28px 20px;
+  }
+}
