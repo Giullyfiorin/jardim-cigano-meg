@@ -63,7 +63,8 @@ function Contato() {
       dia: String(dadosAgendamento.dia),
       horario: dadosAgendamento.horario,
       inicio: inicio,
-      fim: fim
+      fim: fim,
+      data_completa: dadosAgendamento.dataCompleta,
     })
 
   if (error) {
@@ -78,7 +79,8 @@ function Contato() {
     preco: dadosAgendamento.servico.preco,
     duracao: dadosAgendamento.servico.duracao,
     dia: dadosAgendamento.dia,
-    horario: dadosAgendamento.horario
+    horario: dadosAgendamento.horario,
+    dataCompleta: dadosAgendamento.dataCompleta,
   }})
 }
 

@@ -34,7 +34,7 @@ function Confirmacao() {
             </p>
 
             <p>
-              <strong>Data:</strong> {dados.dia}/06/2026
+              <strong>Data:</strong> {dados.dataCompleta}
             </p>
 
             <p>

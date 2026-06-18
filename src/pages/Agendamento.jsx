@@ -232,10 +232,12 @@ function Agendamento() {
         <Link
           to="/contato"
           state={{
-            servico: servico,
-            dia: diaSelecionado,
-            horario: horarioSelecionado
-          }}
+              servico: servico,
+              dia: diaSelecionado,
+              mes: mesAgenda,
+              ano: anoAgenda,
+              dataCompleta: `${String(diaSelecionado).padStart(2, '0')}/${String(mesAgenda).padStart(2, '0')}/${anoAgenda}`,
+              horario: horarioSelecionado}}
           className="link-servico"
         >
           <button className="botao-agendar">

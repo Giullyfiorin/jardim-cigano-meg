@@ -110,7 +110,21 @@ function Admin() {
   const faturamentoTotal = agendamentos
     .filter((item) => item.status === 'Confirmado')
     .reduce((total, item) => total + converterPreco(item.preco), 0)
+  const mesAtual = new Date().getMonth() + 1
+  const anoAtual = new Date().getFullYear()
 
+  const faturamentoMesAtual = agendamentos
+    .filter((item) => item.status === 'Confirmado')
+    .filter((item) => {
+    if (!item.data_completa) return false
+
+    const partesData = item.data_completa.split('/')
+    const mes = Number(partesData[1])
+    const ano = Number(partesData[2])
+
+    return mes === mesAtual && ano === anoAtual
+  })
+  .reduce((total, item) => total + converterPreco(item.preco), 0)
   return (
     <div className="pagina-admin">
       <div className="topo-servicos">
@@ -121,12 +135,12 @@ function Admin() {
       <section className="dashboard-admin">
         <div className="dashboard-card">
           <h3>{total}</h3>
-          <p>Total</p>
+          <p>📅 Total Agendamentos</p>
         </div>
 
         <div className="dashboard-card">
           <h3>{pendentes}</h3>
-          <p>Pendentes</p>
+          <p>🟡 Pendentes</p>
         </div>
 
         <div className="dashboard-card">
@@ -136,14 +150,21 @@ function Admin() {
 
         <div className="dashboard-card">
           <h3>{cancelados}</h3>
-          <p>Cancelados</p>
+          <p>🔴 Cancelados</p>
         </div>
 
         <div className="dashboard-card faturamento-card">
           <h3>
             R$ {faturamentoTotal.toFixed(2).replace('.', ',')}
           </h3>
-          <p>Faturamento confirmado</p>
+          <p>💎 Faturamento total</p>
+        </div>
+
+        <div className="dashboard-card faturamento-card">
+          <h3>
+            R$ {faturamentoMesAtual.toFixed(2).replace('.', ',')}
+          </h3>
+          <p>💰 Faturamento do mês</p>
         </div>
       </section>
 
@@ -166,7 +187,7 @@ function Admin() {
             <p><strong>Serviço:</strong> {item.servico}</p>
             <p><strong>Valor:</strong> R$ {item.preco}</p>
             <p><strong>Duração:</strong> {item.duracao}</p>
-            <p><strong>Dia:</strong> {item.dia}/06/2026</p>
+            <p><strong>Data:</strong> {item.data_completa || `${item.dia}/06/2026`}</p>
             <p><strong>Horário:</strong> {item.horario}</p>
 
             <p>
