@@ -5,6 +5,7 @@ import { supabase } from '../services/supabase'
 function Admin() {
   const [agendamentos, setAgendamentos] = useState([])
   const [busca, setBusca] = useState('')
+  const [mostrarHistorico, setMostrarHistorico] = useState(false)
 
   const navigate = useNavigate()
   const adminLogado = localStorage.getItem('adminLogado')
@@ -81,7 +82,7 @@ function Admin() {
     )
   }
 
-  const agendamentosFiltrados = agendamentos.filter((item) => {
+  function filtrarPorBusca(item) {
     const textoBusca = busca.toLowerCase()
 
     return (
@@ -91,7 +92,15 @@ function Admin() {
       item.servico?.toLowerCase().includes(textoBusca) ||
       item.status?.toLowerCase().includes(textoBusca)
     )
-  })
+  }
+
+  const agendamentosPendentes = agendamentos
+    .filter((item) => item.status === 'Pendente')
+    .filter(filtrarPorBusca)
+
+  const agendamentosHistorico = agendamentos
+    .filter((item) => item.status === 'Confirmado' || item.status === 'Cancelado')
+    .filter(filtrarPorBusca)
 
   const total = agendamentos.length
 
@@ -110,25 +119,92 @@ function Admin() {
   const faturamentoTotal = agendamentos
     .filter((item) => item.status === 'Confirmado')
     .reduce((total, item) => total + converterPreco(item.preco), 0)
+
   const mesAtual = new Date().getMonth() + 1
   const anoAtual = new Date().getFullYear()
 
   const faturamentoMesAtual = agendamentos
     .filter((item) => item.status === 'Confirmado')
     .filter((item) => {
-    if (!item.data_completa) return false
+      if (!item.data_completa) return false
 
-    const partesData = item.data_completa.split('/')
-    const mes = Number(partesData[1])
-    const ano = Number(partesData[2])
+      const partesData = item.data_completa.split('/')
+      const mes = Number(partesData[1])
+      const ano = Number(partesData[2])
 
-    return mes === mesAtual && ano === anoAtual
-  })
-  .reduce((total, item) => total + converterPreco(item.preco), 0)
+      return mes === mesAtual && ano === anoAtual
+    })
+    .reduce((total, item) => total + converterPreco(item.preco), 0)
+
+  function renderizarCard(item) {
+    return (
+      <div className="card-admin" key={item.id}>
+        <h3>
+          {item.nome} {item.sobrenome}
+        </h3>
+
+        <p><strong>Telefone:</strong> {item.telefone}</p>
+        <p><strong>Serviço:</strong> {item.servico}</p>
+        <p><strong>Valor:</strong> R$ {item.preco}</p>
+        <p><strong>Duração:</strong> {item.duracao}</p>
+        <p><strong>Data:</strong> {item.data_completa || `${item.dia}/06/2026`}</p>
+        <p><strong>Horário:</strong> {item.horario}</p>
+
+        <p>
+          <strong>Status:</strong>{' '}
+          <span className={`status-badge ${item.status?.toLowerCase()}`}>
+            {item.status}
+          </span>
+        </p>
+
+        {item.comentario && (
+          <p><strong>Comentário:</strong> {item.comentario}</p>
+        )}
+
+        <div className="acoes-admin">
+          {item.status === 'Pendente' && (
+            <>
+              <button
+                className="btn-confirmar"
+                onClick={() => atualizarStatus(item.id, 'Confirmado')}
+              >
+                Confirmar
+              </button>
+
+              <button
+                className="btn-cancelar"
+                onClick={() => atualizarStatus(item.id, 'Cancelado')}
+              >
+                Cancelar
+              </button>
+            </>
+          )}
+
+          <a
+            href={`https://wa.me/55${item.telefone}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <button className="btn-whatsapp">
+              WhatsApp
+            </button>
+          </a>
+
+          <button
+            className="btn-excluir"
+            onClick={() => excluirAgendamento(item.id)}
+          >
+            Excluir
+          </button>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="pagina-admin">
       <div className="topo-servicos">
-        <h2>Painel da Meg</h2>
+        <h2>Dashboard</h2>
         <p>Agendamentos recebidos</p>
       </div>
 
@@ -145,7 +221,7 @@ function Admin() {
 
         <div className="dashboard-card">
           <h3>{confirmados}</h3>
-          <p>Confirmados</p>
+          <p>🟢 Confirmados</p>
         </div>
 
         <div className="dashboard-card">
@@ -176,66 +252,45 @@ function Admin() {
         onChange={(e) => setBusca(e.target.value)}
       />
 
+      <div className="admin-titulo-lista">
+        <h3>Agendamentos pendentes</h3>
+
+        <button
+          className="btn-historico"
+          onClick={() => setMostrarHistorico(!mostrarHistorico)}
+        >
+          {mostrarHistorico ? 'Ocultar histórico' : 'Mostrar histórico'}
+        </button>
+      </div>
+
       <section className="lista-admin">
-        {agendamentosFiltrados.map((item) => (
-          <div className="card-admin" key={item.id}>
-            <h3>
-              {item.nome} {item.sobrenome}
-            </h3>
-
-            <p><strong>Telefone:</strong> {item.telefone}</p>
-            <p><strong>Serviço:</strong> {item.servico}</p>
-            <p><strong>Valor:</strong> R$ {item.preco}</p>
-            <p><strong>Duração:</strong> {item.duracao}</p>
-            <p><strong>Data:</strong> {item.data_completa || `${item.dia}/06/2026`}</p>
-            <p><strong>Horário:</strong> {item.horario}</p>
-
-            <p>
-              <strong>Status:</strong>{' '}
-              <span className={`status-badge ${item.status?.toLowerCase()}`}>
-                {item.status}
-              </span>
-            </p>
-
-            {item.comentario && (
-              <p><strong>Comentário:</strong> {item.comentario}</p>
-            )}
-
-            <div className="acoes-admin">
-              <button
-                className="btn-confirmar"
-                onClick={() => atualizarStatus(item.id, 'Confirmado')}
-              >
-                Confirmar
-              </button>
-
-              <button
-                className="btn-cancelar"
-                onClick={() => atualizarStatus(item.id, 'Cancelado')}
-              >
-                Cancelar
-              </button>
-
-              <a
-                href={`https://wa.me/55${item.telefone}`}
-                target="_blank"
-                rel="noreferrer"
-              >
-                <button className="btn-whatsapp">
-                  WhatsApp
-                </button>
-              </a>
-
-              <button
-                className="btn-excluir"
-                onClick={() => excluirAgendamento(item.id)}
-              >
-                Excluir
-              </button>
-            </div>
+        {agendamentosPendentes.length > 0 ? (
+          agendamentosPendentes.map(renderizarCard)
+        ) : (
+          <div className="card-admin">
+            <h3>Nenhum agendamento pendente</h3>
+            <p>Os agendamentos confirmados ou cancelados ficam no histórico.</p>
           </div>
-        ))}
+        )}
       </section>
+
+      {mostrarHistorico && (
+        <>
+          <div className="admin-titulo-lista">
+            <h3>Histórico</h3>
+          </div>
+
+          <section className="lista-admin">
+            {agendamentosHistorico.length > 0 ? (
+              agendamentosHistorico.map(renderizarCard)
+            ) : (
+              <div className="card-admin">
+                <h3>Nenhum histórico encontrado</h3>
+              </div>
+            )}
+          </section>
+        </>
+      )}
 
       <div className="container-sair">
         <button className="btn-sair" onClick={sair}>

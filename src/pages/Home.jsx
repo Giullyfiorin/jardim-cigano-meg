@@ -1,5 +1,7 @@
 import Botao from '../components/Botao'
 import { FaInstagram, FaTiktok } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
+import { FaDoorOpen } from 'react-icons/fa'
 
 function Home() {
   return (
@@ -52,9 +54,21 @@ function Home() {
         >
           <FaTiktok />
         </a>
+
+        <Link
+            to="/admin-login"
+            className="admin-icone"
+          >
+            <FaDoorOpen />
+        </Link>
+
       </div>
     </div>
+    
+    
   )
 }
+
+
 
 export default Home
