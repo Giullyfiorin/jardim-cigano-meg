@@ -15,11 +15,11 @@ function Home() {
       </h1>
 
       <p className="slogan">
-        ✨ O universo fala através das cartas ✨
+        ✨ Agende sua consulta e descubra o que sua alma precisa saber ✨
       </p>
 
       <p className="descricao">
-        Consultas espirituais, tarot e baralho cigano.
+        Consultas espirituais e baralho cigano.
       </p>
 
       <div className="botoes">

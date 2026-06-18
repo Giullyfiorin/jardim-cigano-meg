@@ -601,3 +601,74 @@
     padding: 28px 20px;
   }
 }
+
+.card-pagamento {
+  background: rgba(75, 31, 115, 0.08);
+  border: 1px solid rgba(75, 31, 115, 0.2);
+  padding: 18px;
+  border-radius: 14px;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.card-pagamento h3 {
+  color: #4b1f73;
+  margin-bottom: 10px;
+}
+
+.dias-semana,
+.calendario-grid {
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.confirmacao-card .botao-whatsapp,
+.confirmacao-card .botao-agendar {
+  margin-top: 12px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.faturamento-card {
+  grid-column: span 2;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.status-badge.pendente {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-badge.confirmado {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-badge.cancelado {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.btn-excluir {
+  background: #333;
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-excluir:hover {
+  background: #111;
+}
+
+@media (max-width: 600px) {
+  .faturamento-card {
+    grid-column: span 2;
+  }
+}

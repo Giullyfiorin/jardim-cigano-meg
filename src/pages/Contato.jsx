@@ -72,7 +72,14 @@ function Contato() {
     return
   }
 
-  navigate('/confirmacao')
+  navigate('/confirmacao', {
+  state: {
+    servico: dadosAgendamento.servico.nome,
+    preco: dadosAgendamento.servico.preco,
+    duracao: dadosAgendamento.servico.duracao,
+    dia: dadosAgendamento.dia,
+    horario: dadosAgendamento.horario
+  }})
 }
 
   if (!dadosAgendamento) {

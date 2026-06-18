@@ -6,7 +6,7 @@ function AdminLogin() {
   const navigate = useNavigate()
 
   function entrar() {
-    if (senha === 'meg123') {
+    if (senha === 'Meg@2026Consulta#') {
       localStorage.setItem('adminLogado', 'true')
       navigate('/admin')
     } else {

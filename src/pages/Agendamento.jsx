@@ -58,6 +58,21 @@ function Agendamento() {
   const [diaSelecionado, setDiaSelecionado] = useState('')
   const [horarioSelecionado, setHorarioSelecionado] = useState('')
   const [horariosOcupados, setHorariosOcupados] = useState([])
+  
+  const meses = [
+  'Janeiro',
+  'Fevereiro',
+  'Março',
+  'Abril',
+  'Maio',
+  'Junho',
+  'Julho',
+  'Agosto',
+  'Setembro',
+  'Outubro',
+  'Novembro',
+  'Dezembro'
+]
 
   const dias = [
     1, 2, 3, 4, 5, 6, 7,
@@ -68,20 +83,20 @@ function Agendamento() {
   ]
 
   const horarios = [
-    '09:00', '09:30', '10:00',
-    '14:10', '14:40', '15:10',
-    '15:40', '17:15', '17:45',
-    '18:15', '18:45', '19:15',
-    '19:45'
-  ]
+  '10:00', '10:30', '11:00', '11:30',
+  '13:00', '13:30', '14:00', '14:30',
+  '15:00', '15:30', '16:00', '16:30',
+  '17:00', '17:30', '18:00', '18:30',
+  '19:00'
+]
 
   const hoje = new Date()
   const diaAtual = hoje.getDate()
   const mesAtual = hoje.getMonth() + 1
   const anoAtual = hoje.getFullYear()
 
-  const mesAgenda = 6
-  const anoAgenda = 2026
+  const mesAgenda = hoje.getMonth() + 1
+  const anoAgenda = hoje.getFullYear()
 
   useEffect(() => {
     async function buscarHorariosOcupados() {
@@ -140,16 +155,14 @@ function Agendamento() {
       </section>
 
       <section className="calendario-card">
-        <h2>Junho, 2026</h2>
+        <h2>{meses[mesAgenda - 1]}, {anoAgenda}</h2>
 
         <div className="dias-semana">
-          <span>Dom.</span>
           <span>Seg.</span>
           <span>Ter.</span>
           <span>Qua.</span>
           <span>Qui.</span>
           <span>Sex.</span>
-          <span>Sáb.</span>
         </div>
 
         <div className="calendario-grid">
@@ -183,7 +196,7 @@ function Agendamento() {
 
       {diaSelecionado && (
         <p className="data-selecionada">
-          Dia selecionado: {diaSelecionado} de junho de 2026
+          Dia selecionado: {diaSelecionado} de {meses[mesAgenda - 1]} de {anoAgenda}
         </p>
       )}
 
@@ -191,9 +204,9 @@ function Agendamento() {
         <div className="horarios">
           {horarios.map((horario) => {
             const horarioOcupado = horarioEstaOcupado(
-               horario,
-               horariosOcupados,
-               servico.duracao)
+                horario,
+                horariosOcupados,
+                servico.duracao)
 
             return (
               <button

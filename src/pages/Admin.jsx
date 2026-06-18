@@ -1,17 +1,17 @@
 import { useEffect, useState } from 'react'
-import { supabase } from '../services/supabase'
 import { Navigate, useNavigate } from 'react-router-dom'
+import { supabase } from '../services/supabase'
 
 function Admin() {
-  const adminLogado = localStorage.getItem('adminLogado')
-  
-
-if (!adminLogado) {
-  return <Navigate to="/admin-login" />
-}
   const [agendamentos, setAgendamentos] = useState([])
   const [busca, setBusca] = useState('')
+
   const navigate = useNavigate()
+  const adminLogado = localStorage.getItem('adminLogado')
+
+  if (!adminLogado) {
+    return <Navigate to="/admin-login" />
+  }
 
   async function buscarAgendamentos() {
     const { data, error } = await supabase
@@ -41,14 +41,45 @@ if (!adminLogado) {
     buscarAgendamentos()
   }
 
-function sair() {
-  localStorage.removeItem('adminLogado')
-  navigate('/admin-login')
-}
+  async function excluirAgendamento(id) {
+    const confirmar = confirm('Tem certeza que deseja excluir este agendamento?')
+
+    if (!confirmar) return
+
+    const { error } = await supabase
+      .from('agendamentos')
+      .delete()
+      .eq('id', id)
+
+    if (error) {
+      console.log(error)
+      alert('Erro ao excluir agendamento.')
+      return
+    }
+
+    buscarAgendamentos()
+  }
+
+  function sair() {
+    localStorage.removeItem('adminLogado')
+    navigate('/admin-login')
+  }
 
   useEffect(() => {
     buscarAgendamentos()
   }, [])
+
+  function converterPreco(preco) {
+    if (!preco) return 0
+
+    return Number(
+      String(preco)
+        .replace('R$', '')
+        .replace('.', '')
+        .replace(',', '.')
+        .trim()
+    )
+  }
 
   const agendamentosFiltrados = agendamentos.filter((item) => {
     const textoBusca = busca.toLowerCase()
@@ -63,9 +94,22 @@ function sair() {
   })
 
   const total = agendamentos.length
-  const pendentes = agendamentos.filter((item) => item.status === 'Pendente').length
-  const confirmados = agendamentos.filter((item) => item.status === 'Confirmado').length
-  const cancelados = agendamentos.filter((item) => item.status === 'Cancelado').length
+
+  const pendentes = agendamentos.filter(
+    (item) => item.status === 'Pendente'
+  ).length
+
+  const confirmados = agendamentos.filter(
+    (item) => item.status === 'Confirmado'
+  ).length
+
+  const cancelados = agendamentos.filter(
+    (item) => item.status === 'Cancelado'
+  ).length
+
+  const faturamentoTotal = agendamentos
+    .filter((item) => item.status === 'Confirmado')
+    .reduce((total, item) => total + converterPreco(item.preco), 0)
 
   return (
     <div className="pagina-admin">
@@ -73,7 +117,7 @@ function sair() {
         <h2>Painel da Meg</h2>
         <p>Agendamentos recebidos</p>
       </div>
-      
+
       <section className="dashboard-admin">
         <div className="dashboard-card">
           <h3>{total}</h3>
@@ -94,6 +138,13 @@ function sair() {
           <h3>{cancelados}</h3>
           <p>Cancelados</p>
         </div>
+
+        <div className="dashboard-card faturamento-card">
+          <h3>
+            R$ {faturamentoTotal.toFixed(2).replace('.', ',')}
+          </h3>
+          <p>Faturamento confirmado</p>
+        </div>
       </section>
 
       <input
@@ -107,7 +158,9 @@ function sair() {
       <section className="lista-admin">
         {agendamentosFiltrados.map((item) => (
           <div className="card-admin" key={item.id}>
-            <h3>{item.nome} {item.sobrenome}</h3>
+            <h3>
+              {item.nome} {item.sobrenome}
+            </h3>
 
             <p><strong>Telefone:</strong> {item.telefone}</p>
             <p><strong>Serviço:</strong> {item.servico}</p>
@@ -115,7 +168,13 @@ function sair() {
             <p><strong>Duração:</strong> {item.duracao}</p>
             <p><strong>Dia:</strong> {item.dia}/06/2026</p>
             <p><strong>Horário:</strong> {item.horario}</p>
-            <p><strong>Status:</strong> {item.status}</p>
+
+            <p>
+              <strong>Status:</strong>{' '}
+              <span className={`status-badge ${item.status?.toLowerCase()}`}>
+                {item.status}
+              </span>
+            </p>
 
             {item.comentario && (
               <p><strong>Comentário:</strong> {item.comentario}</p>
@@ -145,24 +204,24 @@ function sair() {
                   WhatsApp
                 </button>
               </a>
+
+              <button
+                className="btn-excluir"
+                onClick={() => excluirAgendamento(item.id)}
+              >
+                Excluir
+              </button>
             </div>
           </div>
         ))}
       </section>
 
       <div className="container-sair">
-        <button
-          className="btn-sair"
-          onClick={sair}
-        >
-    🚪 Sair do Painel
-      </button>
+        <button className="btn-sair" onClick={sair}>
+          🚪 Sair do Painel
+        </button>
+      </div>
     </div>
-
-    </div>
-    
-    
-    
   )
 }
 
