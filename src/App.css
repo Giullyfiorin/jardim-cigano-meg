@@ -81,16 +81,6 @@
   color: #f5c76b;
 }
 
-.estrelas {
-  pointer-events: none;
-}
-
-.redes-sociais {
-  position: relative;
-  z-index: 2;
-}
-
-
 /* BOTÕES */
 .botoes {
   display: flex;
@@ -253,14 +243,6 @@
 .calendario-card h2 {
   text-align: center;
   margin-bottom: 20px;
-}
-
-.dias-semana,
-.calendario-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  text-align: center;
-  gap: 14px;
 }
 
 .dias-semana {
@@ -671,19 +653,6 @@
   .faturamento-card {
     grid-column: span 2;
   }
-}
-
-.link-admin {
-  display: block;
-  margin-top: 40px;
-  text-align: center;
-  color: rgba(255,255,255,0.5);
-  text-decoration: none;
-  font-size: 0.8rem;
-}
-
-.link-admin:hover {
-  color: #f5c76b;
 }
 
 .admin-icone {
