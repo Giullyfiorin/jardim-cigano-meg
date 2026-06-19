@@ -192,23 +192,23 @@ npm run dev
 
 ### Página Inicial
 
-![Home](./screenshots/home.png)
+![Home](./Screenshots/Home.png)
 
 ### Serviços
 
-![Serviços](./screenshots/servicos.png)
+![Serviços](./Screenshots/Servicos.png)
 
 ### Agendamento
 
-![Agendamento](./screenshots/agendamento.png)
+![Agendamento](./Screenshots/Agendamento.png)
 
 ### Painel Administrativo
 
-![Admin](./screenshots/admin.png)
+![Admin](./Screenshots/Adminpainel.png)
 
-> Ajuste os nomes das imagens caso estejam diferentes na pasta `screenshots`.
+### Login Administrativo
 
----
+![Admin Login](./Screenshots/AdminLogin.png)
 
 ## 📚 Aprendizados
 
