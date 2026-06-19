@@ -37,7 +37,7 @@ function Agendamento() {
   const location = useLocation()
   const servico = location.state
 
-  const [diaSelecionado, setDiaSelecionado] = useState('')
+  const [diaSelecionado, setDiaSelecionado] = useState(null)
   const [horarioSelecionado, setHorarioSelecionado] = useState('')
   const [horariosOcupados, setHorariosOcupados] = useState([])
 
@@ -46,8 +46,8 @@ function Agendamento() {
   const mesAtual = hoje.getMonth() + 1
   const anoAtual = hoje.getFullYear()
 
-  const mesAgenda = hoje.getMonth() + 1
-  const anoAgenda = hoje.getFullYear()
+  const mesAgenda = mesAtual
+  const anoAgenda = anoAtual
 
   const meses = [
     'Janeiro',
@@ -106,18 +106,19 @@ function Agendamento() {
         .from('agendamentos')
         .select('inicio, fim')
         .eq('dia', String(diaSelecionado))
+        .eq('data_completa', `${String(diaSelecionado).padStart(2, '0')}/${String(mesAgenda).padStart(2, '0')}/${anoAgenda}`)
 
       if (error) {
         console.log(error)
         return
       }
 
-      setHorariosOcupados(data)
+      setHorariosOcupados(data || [])
       setHorarioSelecionado('')
     }
 
     buscarHorariosOcupados()
-  }, [diaSelecionado])
+  }, [diaSelecionado, mesAgenda, anoAgenda])
 
   if (!servico) {
     return (
@@ -167,22 +168,20 @@ function Agendamento() {
 
         <div className="calendario-grid">
           {dias.map((dia) => {
-            const diaPassado =
-              anoAgenda < anoAtual ||
-              (anoAgenda === anoAtual && mesAgenda < mesAtual) ||
-              (anoAgenda === anoAtual &&
-                mesAgenda === mesAtual &&
-                dia < diaAtual)
+            const diaPassado = dia < diaAtual
 
             return (
               <button
                 key={dia}
                 disabled={diaPassado}
-                onClick={() => setDiaSelecionado(dia)}
+                onClick={() => {
+                  setDiaSelecionado(Number(dia))
+                  setHorarioSelecionado('')
+                }}
                 className={
                   diaPassado
                     ? 'dia indisponivel'
-                    : diaSelecionado === dia
+                    : Number(diaSelecionado) === Number(dia)
                     ? 'dia ativo'
                     : 'dia disponivel'
                 }
@@ -196,7 +195,7 @@ function Agendamento() {
 
       {diaSelecionado && (
         <p className="data-selecionada">
-          Dia selecionado: {diaSelecionado} de {meses[mesAgenda - 1]} de {anoAgenda}
+          Dia selecionado: {Number(diaSelecionado)} de {meses[mesAgenda - 1]} de {anoAgenda}
         </p>
       )}
 
@@ -237,7 +236,7 @@ function Agendamento() {
             to="/contato"
             state={{
               servico: servico,
-              dia: diaSelecionado,
+              dia: Number(diaSelecionado),
               mes: mesAgenda,
               ano: anoAgenda,
               dataCompleta: `${String(diaSelecionado).padStart(2, '0')}/${String(mesAgenda).padStart(2, '0')}/${anoAgenda}`,

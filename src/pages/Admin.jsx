@@ -25,7 +25,7 @@ function Admin() {
       return
     }
 
-    setAgendamentos(data)
+    setAgendamentos(data || [])
   }
 
   async function atualizarStatus(id, novoStatus) {
@@ -70,16 +70,32 @@ function Admin() {
     buscarAgendamentos()
   }, [])
 
+  function normalizarStatus(status) {
+    return String(status || 'Pendente').trim().toLowerCase()
+  }
+
   function converterPreco(preco) {
     if (!preco) return 0
 
-    return Number(
-      String(preco)
-        .replace('R$', '')
-        .replace('.', '')
-        .replace(',', '.')
-        .trim()
-    )
+    const valorLimpo = String(preco)
+      .replace('R$', '')
+      .replace(/\s/g, '')
+      .replace('.', '')
+      .replace(',', '.')
+
+    return Number(valorLimpo) || 0
+  }
+
+  function formatarMoeda(valor) {
+    return valor.toFixed(2).replace('.', ',')
+  }
+
+  function formatarDataHoje() {
+    const hoje = new Date()
+
+    return `${String(hoje.getDate()).padStart(2, '0')}/${String(
+      hoje.getMonth() + 1
+    ).padStart(2, '0')}/${hoje.getFullYear()}`
   }
 
   function filtrarPorBusca(item) {
@@ -90,53 +106,68 @@ function Admin() {
       item.sobrenome?.toLowerCase().includes(textoBusca) ||
       item.telefone?.includes(busca) ||
       item.servico?.toLowerCase().includes(textoBusca) ||
-      item.status?.toLowerCase().includes(textoBusca)
+      normalizarStatus(item.status).includes(textoBusca)
     )
   }
 
+  function ehDoMesAtual(item) {
+    if (!item.data_completa) return false
+
+    const partesData = item.data_completa.split('/')
+    const mes = Number(partesData[1])
+    const ano = Number(partesData[2])
+
+    const hoje = new Date()
+    const mesAtual = hoje.getMonth() + 1
+    const anoAtual = hoje.getFullYear()
+
+    return mes === mesAtual && ano === anoAtual
+  }
+
+  const hojeFormatado = formatarDataHoje()
+
   const agendamentosPendentes = agendamentos
-    .filter((item) => item.status === 'Pendente')
+    .filter((item) => normalizarStatus(item.status) === 'pendente')
     .filter(filtrarPorBusca)
 
   const agendamentosHistorico = agendamentos
-    .filter((item) => item.status === 'Confirmado' || item.status === 'Cancelado')
+    .filter((item) => {
+      const status = normalizarStatus(item.status)
+      return status === 'confirmado' || status === 'cancelado'
+    })
     .filter(filtrarPorBusca)
 
   const total = agendamentos.length
 
   const pendentes = agendamentos.filter(
-    (item) => item.status === 'Pendente'
+    (item) => normalizarStatus(item.status) === 'pendente'
   ).length
 
   const confirmados = agendamentos.filter(
-    (item) => item.status === 'Confirmado'
+    (item) => normalizarStatus(item.status) === 'confirmado'
   ).length
 
   const cancelados = agendamentos.filter(
-    (item) => item.status === 'Cancelado'
+    (item) => normalizarStatus(item.status) === 'cancelado'
   ).length
 
-  const faturamentoTotal = agendamentos
-    .filter((item) => item.status === 'Confirmado')
+  const agendamentosHoje = agendamentos.filter(
+    (item) => item.data_completa === hojeFormatado
+  ).length
+
+  const faturamentoHoje = agendamentos
+    .filter((item) => normalizarStatus(item.status) === 'confirmado')
+    .filter((item) => item.data_completa === hojeFormatado)
     .reduce((total, item) => total + converterPreco(item.preco), 0)
 
-  const mesAtual = new Date().getMonth() + 1
-  const anoAtual = new Date().getFullYear()
-
   const faturamentoMesAtual = agendamentos
-    .filter((item) => item.status === 'Confirmado')
-    .filter((item) => {
-      if (!item.data_completa) return false
-
-      const partesData = item.data_completa.split('/')
-      const mes = Number(partesData[1])
-      const ano = Number(partesData[2])
-
-      return mes === mesAtual && ano === anoAtual
-    })
+    .filter((item) => normalizarStatus(item.status) === 'confirmado')
+    .filter(ehDoMesAtual)
     .reduce((total, item) => total + converterPreco(item.preco), 0)
 
   function renderizarCard(item) {
+    const statusNormalizado = normalizarStatus(item.status)
+
     return (
       <div className="card-admin" key={item.id}>
         <h3>
@@ -152,8 +183,8 @@ function Admin() {
 
         <p>
           <strong>Status:</strong>{' '}
-          <span className={`status-badge ${item.status?.toLowerCase()}`}>
-            {item.status}
+          <span className={`status-badge ${statusNormalizado}`}>
+            {item.status || 'Pendente'}
           </span>
         </p>
 
@@ -162,7 +193,7 @@ function Admin() {
         )}
 
         <div className="acoes-admin">
-          {item.status === 'Pendente' && (
+          {statusNormalizado === 'pendente' && (
             <>
               <button
                 className="btn-confirmar"
@@ -229,18 +260,14 @@ function Admin() {
           <p>🔴 Cancelados</p>
         </div>
 
-        <div className="dashboard-card faturamento-card">
-          <h3>
-            R$ {faturamentoTotal.toFixed(2).replace('.', ',')}
-          </h3>
-          <p>💎 Faturamento total</p>
+        <div className="dashboard-card dashboard-card-hoje">
+          <h3>{agendamentosHoje}</h3>
+          <p>📆 Agendamentos Hoje</p>
         </div>
 
-        <div className="dashboard-card faturamento-card">
-          <h3>
-            R$ {faturamentoMesAtual.toFixed(2).replace('.', ',')}
-          </h3>
-          <p>💰 Faturamento do mês</p>
+        <div className="dashboard-card faturamento-card faturamento-hoje">
+          <h3>R$ {formatarMoeda(faturamentoHoje)}</h3>
+          <p>💰 Faturamento Hoje</p>
         </div>
       </section>
 
@@ -279,6 +306,13 @@ function Admin() {
           <div className="admin-titulo-lista">
             <h3>Histórico</h3>
           </div>
+
+          <section className="dashboard-admin">
+            <div className="dashboard-card faturamento-card faturamento-mes">
+              <h3>R$ {formatarMoeda(faturamentoMesAtual)}</h3>
+              <p>📈 Faturamento do mês</p>
+            </div>
+          </section>
 
           <section className="lista-admin">
             {agendamentosHistorico.length > 0 ? (
