@@ -83,6 +83,21 @@ function Agendamento() {
     return diaSemana >= 1 && diaSemana <= 5
   })
 
+  function horarioJaPassou(horario) {
+    const diaEhHoje =
+      Number(diaSelecionado) === diaAtual &&
+      mesAgenda === mesAtual &&
+      anoAgenda === anoAtual
+
+    if (!diaEhHoje) return false
+
+    const agora = new Date()
+    const horarioEmMinutos = converterHorarioParaMinutos(horario)
+    const agoraEmMinutos = agora.getHours() * 60 + agora.getMinutes()
+
+    return horarioEmMinutos <= agoraEmMinutos
+  }
+
   useEffect(() => {
     async function buscarHorariosOcupados() {
       if (!diaSelecionado) return
@@ -194,13 +209,15 @@ function Agendamento() {
               servico.duracao
             )
 
+            const horarioPassado = horarioJaPassou(horario)
+
             return (
               <button
                 key={horario}
-                disabled={horarioOcupado}
+                disabled={horarioOcupado || horarioPassado}
                 onClick={() => setHorarioSelecionado(horario)}
                 className={
-                  horarioOcupado
+                  horarioOcupado || horarioPassado
                     ? 'botao-horario horario-indisponivel'
                     : horarioSelecionado === horario
                     ? 'botao-horario horario-ativo'
@@ -216,23 +233,23 @@ function Agendamento() {
 
       {diaSelecionado && horarioSelecionado && (
         <div className="container-botao-continuar">
-  <Link
-    to="/contato"
-    state={{
-      servico: servico,
-      dia: diaSelecionado,
-      mes: mesAgenda,
-      ano: anoAgenda,
-      dataCompleta: `${String(diaSelecionado).padStart(2, '0')}/${String(mesAgenda).padStart(2, '0')}/${anoAgenda}`,
-      horario: horarioSelecionado
-    }}
-    className="link-servico"
-  >
-    <button className="botao-agendar">
-      Continuar
-    </button>
-  </Link>
-</div>
+          <Link
+            to="/contato"
+            state={{
+              servico: servico,
+              dia: diaSelecionado,
+              mes: mesAgenda,
+              ano: anoAgenda,
+              dataCompleta: `${String(diaSelecionado).padStart(2, '0')}/${String(mesAgenda).padStart(2, '0')}/${anoAgenda}`,
+              horario: horarioSelecionado
+            }}
+            className="link-servico"
+          >
+            <button className="botao-agendar">
+              Continuar
+            </button>
+          </Link>
+        </div>
       )}
     </div>
   )
