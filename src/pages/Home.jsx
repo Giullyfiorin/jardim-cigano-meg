@@ -40,30 +40,29 @@ function Home() {
 
       <div className="redes-sociais">
         <a
-          href="https://www.instagram.com/margarida.leal10?igsh=MTlqc3psZWVudTg2cA=="
+          href="https://www.instagram.com/megdoaxe?igsh=MTlqc3psZWVudTg2cA=="
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
         >
           <FaInstagram />
         </a>
 
         <a
-          href="https://www.tiktok.com/@megdoaxe?_r=1&_t=ZS-97HA315bIKP"
+          href="https://www.tiktok.com/@megdoaxe?_r=1&_t=ZS-97LlKt1zLer"
           target="_blank"
-          rel="noreferrer"
+          rel="noopener noreferrer"
         >
           <FaTiktok />
         </a>
-
-        <Link
-            to="/admin-login"
-            className="admin-icone"
-          >
-            <FaDoorOpen />
-        </Link>
-
       </div>
-    </div>
+
+      <Link
+        to="/admin-login"
+        className="admin-icone"
+      >
+        <FaDoorOpen />
+      </Link>
+          </div>
     
     
   )

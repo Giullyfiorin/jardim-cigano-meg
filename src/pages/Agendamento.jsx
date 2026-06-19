@@ -6,6 +6,7 @@ function converterHorarioParaMinutos(horario) {
   const [hora, minuto] = horario.split(':').map(Number)
   return hora * 60 + minuto
 }
+
 function converterDuracaoParaMinutos(duracao) {
   if (duracao === '5 min') return 5
   if (duracao === '10 min') return 10
@@ -18,36 +19,17 @@ function converterDuracaoParaMinutos(duracao) {
   return 30
 }
 
-function horarioEstaOcupado(
-  horario,
-  horariosOcupados,
-  duracaoServico
-) {
+function horarioEstaOcupado(horario, horariosOcupados, duracaoServico) {
   const novoInicio = converterHorarioParaMinutos(horario)
-
-  const novoFim =
-    novoInicio +
-    converterDuracaoParaMinutos(duracaoServico)
+  const novoFim = novoInicio + converterDuracaoParaMinutos(duracaoServico)
 
   return horariosOcupados.some((agendamento) => {
-    if (!agendamento.inicio || !agendamento.fim) {
-      return false
-    }
+    if (!agendamento.inicio || !agendamento.fim) return false
 
-    const inicioExistente =
-      converterHorarioParaMinutos(
-        agendamento.inicio
-      )
+    const inicioExistente = converterHorarioParaMinutos(agendamento.inicio)
+    const fimExistente = converterHorarioParaMinutos(agendamento.fim)
 
-    const fimExistente =
-      converterHorarioParaMinutos(
-        agendamento.fim
-      )
-
-    return (
-      novoInicio < fimExistente &&
-      novoFim > inicioExistente
-    )
+    return novoInicio < fimExistente && novoFim > inicioExistente
   })
 }
 
@@ -58,37 +40,6 @@ function Agendamento() {
   const [diaSelecionado, setDiaSelecionado] = useState('')
   const [horarioSelecionado, setHorarioSelecionado] = useState('')
   const [horariosOcupados, setHorariosOcupados] = useState([])
-  
-  const meses = [
-  'Janeiro',
-  'Fevereiro',
-  'Março',
-  'Abril',
-  'Maio',
-  'Junho',
-  'Julho',
-  'Agosto',
-  'Setembro',
-  'Outubro',
-  'Novembro',
-  'Dezembro'
-]
-
-  const dias = [
-    1, 2, 3, 4, 5, 6, 7,
-    8, 9, 10, 11, 12, 13, 14,
-    15, 16, 17, 18, 19, 20, 21,
-    22, 23, 24, 25, 26, 27, 28,
-    29, 30
-  ]
-
-  const horarios = [
-  '10:00', '10:30', '11:00', '11:30',
-  '13:00', '13:30', '14:00', '14:30',
-  '15:00', '15:30', '16:00', '16:30',
-  '17:00', '17:30', '18:00', '18:30',
-  '19:00'
-]
 
   const hoje = new Date()
   const diaAtual = hoje.getDate()
@@ -97,6 +48,40 @@ function Agendamento() {
 
   const mesAgenda = hoje.getMonth() + 1
   const anoAgenda = hoje.getFullYear()
+
+  const meses = [
+    'Janeiro',
+    'Fevereiro',
+    'Março',
+    'Abril',
+    'Maio',
+    'Junho',
+    'Julho',
+    'Agosto',
+    'Setembro',
+    'Outubro',
+    'Novembro',
+    'Dezembro'
+  ]
+
+  const horarios = [
+    '10:00', '10:30', '11:00', '11:30',
+    '13:00', '13:30', '14:00', '14:30',
+    '15:00', '15:30', '16:00', '16:30',
+    '17:00', '17:30', '18:00', '18:30',
+    '19:00'
+  ]
+
+  const quantidadeDiasMes = new Date(anoAgenda, mesAgenda, 0).getDate()
+
+  const dias = Array.from({ length: quantidadeDiasMes }, (_, index) => {
+    return index + 1
+  }).filter((dia) => {
+    const data = new Date(anoAgenda, mesAgenda - 1, dia)
+    const diaSemana = data.getDay()
+
+    return diaSemana >= 1 && diaSemana <= 5
+  })
 
   useEffect(() => {
     async function buscarHorariosOcupados() {
@@ -204,9 +189,10 @@ function Agendamento() {
         <div className="horarios">
           {horarios.map((horario) => {
             const horarioOcupado = horarioEstaOcupado(
-                horario,
-                horariosOcupados,
-                servico.duracao)
+              horario,
+              horariosOcupados,
+              servico.duracao
+            )
 
             return (
               <button
@@ -229,21 +215,24 @@ function Agendamento() {
       )}
 
       {diaSelecionado && horarioSelecionado && (
-        <Link
-          to="/contato"
-          state={{
-              servico: servico,
-              dia: diaSelecionado,
-              mes: mesAgenda,
-              ano: anoAgenda,
-              dataCompleta: `${String(diaSelecionado).padStart(2, '0')}/${String(mesAgenda).padStart(2, '0')}/${anoAgenda}`,
-              horario: horarioSelecionado}}
-          className="link-servico"
-        >
-          <button className="botao-agendar">
-            Continuar
-          </button>
-        </Link>
+        <div className="container-botao-continuar">
+  <Link
+    to="/contato"
+    state={{
+      servico: servico,
+      dia: diaSelecionado,
+      mes: mesAgenda,
+      ano: anoAgenda,
+      dataCompleta: `${String(diaSelecionado).padStart(2, '0')}/${String(mesAgenda).padStart(2, '0')}/${anoAgenda}`,
+      horario: horarioSelecionado
+    }}
+    className="link-servico"
+  >
+    <button className="botao-agendar">
+      Continuar
+    </button>
+  </Link>
+</div>
       )}
     </div>
   )

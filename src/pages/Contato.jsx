@@ -38,51 +38,57 @@ function Contato() {
   const [comentario, setComentario] = useState('')
 
   async function concluirAgendamento() {
-  const inicio = dadosAgendamento.horario
+    if (!nome.trim() || !sobrenome.trim() || !telefone.trim()) {
+      alert('Preencha Nome, Sobrenome e Telefone para continuar.')
+      return
+    }
 
-  const inicioEmMinutos = converterHorarioParaMinutos(inicio)
+    const inicio = dadosAgendamento.horario
 
-  const duracaoEmMinutos = converterDuracaoParaMinutos(
-    dadosAgendamento.servico.duracao
-  )
+    const inicioEmMinutos = converterHorarioParaMinutos(inicio)
 
-  const fim = converterMinutosParaHorario(
-    inicioEmMinutos + duracaoEmMinutos
-  )
+    const duracaoEmMinutos = converterDuracaoParaMinutos(
+      dadosAgendamento.servico.duracao
+    )
 
-  const { error } = await supabase
-    .from('agendamentos')
-    .insert({
-      nome: nome,
-      sobrenome: sobrenome,
-      telefone: telefone,
-      comentario: comentario,
-      servico: dadosAgendamento.servico.nome,
-      preco: dadosAgendamento.servico.preco,
-      duracao: dadosAgendamento.servico.duracao,
-      dia: String(dadosAgendamento.dia),
-      horario: dadosAgendamento.horario,
-      inicio: inicio,
-      fim: fim,
-      data_completa: dadosAgendamento.dataCompleta,
+    const fim = converterMinutosParaHorario(
+      inicioEmMinutos + duracaoEmMinutos
+    )
+
+    const { error } = await supabase
+      .from('agendamentos')
+      .insert({
+        nome: nome,
+        sobrenome: sobrenome,
+        telefone: telefone,
+        comentario: comentario,
+        servico: dadosAgendamento.servico.nome,
+        preco: dadosAgendamento.servico.preco,
+        duracao: dadosAgendamento.servico.duracao,
+        dia: String(dadosAgendamento.dia),
+        horario: dadosAgendamento.horario,
+        inicio: inicio,
+        fim: fim,
+        data_completa: dadosAgendamento.dataCompleta
+      })
+
+    if (error) {
+      alert(error.message)
+      console.log(error)
+      return
+    }
+
+    navigate('/confirmacao', {
+      state: {
+        servico: dadosAgendamento.servico.nome,
+        preco: dadosAgendamento.servico.preco,
+        duracao: dadosAgendamento.servico.duracao,
+        dia: dadosAgendamento.dia,
+        horario: dadosAgendamento.horario,
+        dataCompleta: dadosAgendamento.dataCompleta
+      }
     })
-
-  if (error) {
-    alert(error.message)
-    console.log(error)
-    return
   }
-
-  navigate('/confirmacao', {
-  state: {
-    servico: dadosAgendamento.servico.nome,
-    preco: dadosAgendamento.servico.preco,
-    duracao: dadosAgendamento.servico.duracao,
-    dia: dadosAgendamento.dia,
-    horario: dadosAgendamento.horario,
-    dataCompleta: dadosAgendamento.dataCompleta,
-  }})
-}
 
   if (!dadosAgendamento) {
     return (
@@ -107,7 +113,7 @@ function Contato() {
 
         <input
           type="text"
-          placeholder="Nome"
+          placeholder="Nome *"
           className="campo-formulario"
           value={nome}
           onChange={(e) => setNome(e.target.value)}
@@ -115,7 +121,7 @@ function Contato() {
 
         <input
           type="text"
-          placeholder="Sobrenome"
+          placeholder="Sobrenome *"
           className="campo-formulario"
           value={sobrenome}
           onChange={(e) => setSobrenome(e.target.value)}
@@ -123,19 +129,19 @@ function Contato() {
 
         <input
           type="tel"
-          placeholder="Telefone"
+          placeholder="Telefone *"
           className="campo-formulario"
           value={telefone}
           onChange={(e) => setTelefone(e.target.value)}
         />
 
         <textarea
-          placeholder="Comentário"
+          placeholder="Comentário (opcional)"
           className="campo-formulario"
           rows="4"
           value={comentario}
           onChange={(e) => setComentario(e.target.value)}
-        ></textarea>
+        />
 
         <button
           className="botao-agendar"

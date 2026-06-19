@@ -7,18 +7,6 @@
   overflow: hidden;
 }
 
-.titulo {
-  font-size: 4.5rem;
-  margin-bottom: 15px;
-  color: #fffaf2;
-  text-shadow: 0 0 15px rgba(245, 199, 107, 0.3);
-}
-
-.descricao {
-  font-size: 1.2rem;
-  margin-bottom: 30px;
-}
-
 .estrelas {
   position: absolute;
   inset: 0;
@@ -43,10 +31,15 @@
 .lua-grande {
   font-size: 8rem;
   margin-bottom: 20px;
-  filter:
-    drop-shadow(0 0 15px #f5c76b)
-    drop-shadow(0 0 35px #f5c76b);
+  filter: drop-shadow(0 0 15px #f5c76b) drop-shadow(0 0 35px #f5c76b);
   animation: flutuar 4s ease-in-out infinite;
+}
+
+.titulo {
+  font-size: 4.5rem;
+  margin-bottom: 15px;
+  color: #fffaf2;
+  text-shadow: 0 0 15px rgba(245, 199, 107, 0.3);
 }
 
 .slogan {
@@ -57,28 +50,15 @@
   font-style: italic;
 }
 
+.descricao {
+  font-size: 1.2rem;
+  margin-bottom: 30px;
+}
+
 @keyframes flutuar {
   0% { transform: translateY(0); }
   50% { transform: translateY(-10px); }
   100% { transform: translateY(0); }
-}
-
-.redes-sociais {
-  display: flex;
-  justify-content: center;
-  gap: 40px;
-  margin-top: 35px;
-}
-
-.redes-sociais a {
-  color: white;
-  font-size: 3.5rem;
-  transition: all 0.3s ease;
-}
-
-.redes-sociais a:hover {
-  transform: scale(1.15);
-  color: #f5c76b;
 }
 
 /* BOTÕES */
@@ -101,49 +81,46 @@
 .botao-agendar {
   background: #c8a24d;
   color: #1b102f;
-  border: none;
   padding: 15px 30px;
-  border-radius: 12px;
-  cursor: pointer;
   font-size: 1rem;
-  font-weight: bold;
 }
 
 .botao-whatsapp {
   background: #4b1f73;
   color: white;
-  border: none;
   padding: 15px 30px;
-  border-radius: 12px;
-  cursor: pointer;
   font-size: 1rem;
-  font-weight: bold;
 }
 
-
-.btn-sair {
-  background: transparent;
-  color: #f5c76b;
-  border: 1px solid #f5c76b;
-  padding: 12px 24px;
-  border-radius: 999px;
-  cursor: pointer;
-  font-weight: bold;
-  transition: 0.3s;
-}
-
-.btn-sair:hover {
-  background: #f5c76b;
-  color: #1b102f;
-}
-
-.container-sair {
+.container-botao-continuar {
   display: flex;
   justify-content: center;
-  margin-top: 30px;
-  margin-bottom: 20px;
+  margin-top: 20px;
 }
 
+.resumo-servico .botao-agendar {
+  display: block;
+  margin: 20px auto 0;
+}
+
+/* REDES SOCIAIS */
+.redes-sociais {
+  display: flex;
+  justify-content: center;
+  gap: 40px;
+  margin-top: 35px;
+}
+
+.redes-sociais a {
+  color: white;
+  font-size: 3.5rem;
+  transition: all 0.3s ease;
+}
+
+.redes-sociais a:hover {
+  transform: scale(1.15);
+  color: #f5c76b;
+}
 
 /* PÁGINAS */
 .pagina-servicos,
@@ -171,17 +148,25 @@
   margin-top: 5px;
 }
 
-/* SERVIÇOS */
+.link-servico {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+/* CARDS */
 .categoria-servicos,
 .calendario-card,
 .resumo-servico,
-.card-admin {
+.card-admin,
+.dashboard-card {
   background: #fff8f0;
   color: #1b102f;
   border-radius: 14px;
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
 }
 
+/* SERVIÇOS */
 .categoria-servicos {
   overflow: hidden;
 }
@@ -206,9 +191,12 @@
   margin-bottom: 4px;
 }
 
-.servico-item p {
+.servico-item p,
+.resumo-servico p,
+.resumo-servico span,
+.dashboard-card p,
+.card-login p {
   color: #777;
-  font-size: 0.9rem;
 }
 
 .bolinha-servico {
@@ -218,22 +206,11 @@
   border-radius: 50%;
 }
 
-.link-servico {
-  text-decoration: none;
-  color: inherit;
-  display: block;
-}
-
 /* AGENDAMENTO */
 .resumo-servico {
   padding: 18px;
   margin: 20px 0 30px;
   border: 1px solid #ddd;
-}
-
-.resumo-servico p,
-.resumo-servico span {
-  color: #777;
 }
 
 .calendario-card {
@@ -246,9 +223,20 @@
 }
 
 .dias-semana {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  text-align: center;
   font-size: 0.8rem;
   margin-bottom: 12px;
   color: #555;
+}
+
+.calendario-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 18px;
+  align-items: center;
+  justify-items: center;
 }
 
 .dia {
@@ -286,11 +274,12 @@
 }
 
 .horarios {
+  max-width: 700px;
+  margin: 20px auto;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 12px;
-  padding: 20px;
 }
 
 .botao-horario {
@@ -341,6 +330,27 @@
   margin-bottom: 25px;
 }
 
+.confirmacao-card .botao-whatsapp,
+.confirmacao-card .botao-agendar {
+  margin-top: 12px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.card-pagamento {
+  background: rgba(75, 31, 115, 0.08);
+  border: 1px solid rgba(75, 31, 115, 0.2);
+  padding: 18px;
+  border-radius: 14px;
+  margin: 20px 0;
+  text-align: left;
+}
+
+.card-pagamento h3 {
+  color: #4b1f73;
+  margin-bottom: 10px;
+}
+
 /* ADMIN */
 .pagina-admin {
   max-width: 800px;
@@ -366,40 +376,6 @@
   margin-bottom: 6px;
 }
 
-.acoes-admin {
-  display: flex;
-  gap: 10px;
-  margin-top: 15px;
-  flex-wrap: wrap;
-}
-
-.btn-confirmar {
-  background: #4caf50;
-  color: white;
-  border: none;
-  padding: 10px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.btn-cancelar {
-  background: #f44336;
-  color: white;
-  border: none;
-  padding: 10px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.btn-whatsapp {
-  background: #25d366;
-  color: white;
-  border: none;
-  padding: 10px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
 .dashboard-admin {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
@@ -408,12 +384,8 @@
 }
 
 .dashboard-card {
-  background: #fff8f0;
-  color: #1b102f;
   padding: 18px;
-  border-radius: 14px;
   text-align: center;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
 }
 
 .dashboard-card h3 {
@@ -421,10 +393,137 @@
   font-size: 2rem;
 }
 
-.dashboard-card p {
-  color: #777;
+.faturamento-card {
+  grid-column: span 2;
 }
 
+.acoes-admin {
+  display: flex;
+  gap: 10px;
+  margin-top: 15px;
+  flex-wrap: wrap;
+}
+
+.btn-confirmar,
+.btn-cancelar,
+.btn-whatsapp,
+.btn-excluir {
+  color: white;
+  border: none;
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.btn-confirmar {
+  background: #4caf50;
+}
+
+.btn-cancelar {
+  background: #f44336;
+}
+
+.btn-whatsapp {
+  background: #25d366;
+}
+
+.btn-excluir {
+  background: #333;
+}
+
+.btn-excluir:hover {
+  background: #111;
+}
+
+.status-badge {
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-weight: bold;
+  font-size: 0.85rem;
+}
+
+.status-badge.pendente {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.status-badge.confirmado {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-badge.cancelado {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.admin-titulo-lista {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 25px 0 15px;
+  color: white;
+  gap: 12px;
+}
+
+.btn-historico,
+.btn-sair {
+  background: transparent;
+  color: #f5c76b;
+  border: 1px solid #f5c76b;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-historico {
+  padding: 10px 16px;
+  border-radius: 999px;
+}
+
+.btn-sair {
+  padding: 12px 24px;
+  border-radius: 999px;
+  transition: 0.3s;
+}
+
+.btn-historico:hover,
+.btn-sair:hover {
+  background: #f5c76b;
+  color: #1b102f;
+}
+
+.container-sair {
+  display: flex;
+  justify-content: center;
+  margin: 30px 0 20px;
+}
+
+.admin-icone {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  width: 45px;
+  height: 45px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(245, 199, 107, 0.15);
+  border: 1px solid #f5c76b;
+  border-radius: 50%;
+  color: #f5c76b;
+  font-size: 1.2rem;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  z-index: 999;
+}
+
+.admin-icone:hover {
+  background: #f5c76b;
+  color: #1b102f;
+  transform: scale(1.1);
+}
+
+/* LOGIN */
 .login-admin {
   position: relative;
   min-height: 100vh;
@@ -459,12 +558,7 @@
   margin-bottom: 10px;
 }
 
-.card-login p {
-  color: #777;
-  margin-bottom: 20px;
-}
-
-/* RESPONSIVIDADE - CELULAR */
+/* RESPONSIVO */
 @media (max-width: 600px) {
   .home {
     padding: 60px 20px 40px;
@@ -518,12 +612,9 @@
     padding: 18px;
   }
 
-  .topo-servicos h2 {
+  .topo-servicos h2,
+  .calendario-card h2 {
     font-size: 1.5rem;
-  }
-
-  .categoria-servicos > h2 {
-    font-size: 1.2rem;
   }
 
   .servico-item {
@@ -532,10 +623,6 @@
 
   .calendario-card {
     padding: 18px 12px;
-  }
-
-  .calendario-card h2 {
-    font-size: 1.6rem;
   }
 
   .dias-semana,
@@ -571,6 +658,10 @@
     grid-template-columns: repeat(2, 1fr);
   }
 
+  .faturamento-card {
+    grid-column: span 2;
+  }
+
   .acoes-admin {
     flex-direction: column;
   }
@@ -584,135 +675,15 @@
   }
 }
 
-.card-pagamento {
-  background: rgba(75, 31, 115, 0.08);
-  border: 1px solid rgba(75, 31, 115, 0.2);
-  padding: 18px;
-  border-radius: 14px;
-  margin: 20px 0;
-  text-align: left;
+.redes-sociais {
+  position: relative;
+  z-index: 10;
 }
 
-.card-pagamento h3 {
-  color: #4b1f73;
-  margin-bottom: 10px;
+.redes-sociais a {
+  pointer-events: auto;
 }
 
-.dias-semana,
-.calendario-grid {
-  display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  text-align: center;
-  gap: 14px;
-}
-
-.confirmacao-card .botao-whatsapp,
-.confirmacao-card .botao-agendar {
-  margin-top: 12px;
-  width: 100%;
-  max-width: 320px;
-}
-
-.faturamento-card {
-  grid-column: span 2;
-}
-
-.status-badge {
-  padding: 4px 10px;
-  border-radius: 999px;
-  font-weight: bold;
-  font-size: 0.85rem;
-}
-
-.status-badge.pendente {
-  background: #fff3cd;
-  color: #856404;
-}
-
-.status-badge.confirmado {
-  background: #d4edda;
-  color: #155724;
-}
-
-.status-badge.cancelado {
-  background: #f8d7da;
-  color: #721c24;
-}
-
-.btn-excluir {
-  background: #333;
-  color: white;
-  border: none;
-  padding: 10px 14px;
-  border-radius: 8px;
-  cursor: pointer;
-}
-
-.btn-excluir:hover {
-  background: #111;
-}
-
-@media (max-width: 600px) {
-  .faturamento-card {
-    grid-column: span 2;
-  }
-}
-
-.admin-icone {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-
-  width: 45px;
-  height: 45px;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  background: rgba(245, 199, 107, 0.15);
-
-  border: 1px solid #f5c76b;
-
-  border-radius: 50%;
-
-  color: #f5c76b;
-
-  font-size: 1.2rem;
-
-  text-decoration: none;
-
-  transition: all 0.3s ease;
-
-  z-index: 999;
-}
-
-.admin-icone:hover {
-  background: #f5c76b;
-  color: #1b102f;
-  transform: scale(1.1);
-}
-
-.admin-titulo-lista {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin: 25px 0 15px;
-  color: white;
-  gap: 12px;
-}
-
-.btn-historico {
-  background: transparent;
-  color: #f5c76b;
-  border: 1px solid #f5c76b;
-  padding: 10px 16px;
-  border-radius: 999px;
-  cursor: pointer;
-  font-weight: bold;
-}
-
-.btn-historico:hover {
-  background: #f5c76b;
-  color: #1b102f;
+.estrelas {
+  pointer-events: none;
 }
